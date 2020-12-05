@@ -31,3 +31,6 @@ yarn-error.log*
 # rust
 rust-*/debug/
 rust-*/target/
+
+# tmp
+tmp.txt
