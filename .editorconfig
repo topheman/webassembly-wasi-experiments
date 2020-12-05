@@ -1,0 +1,11 @@
+# http://editorconfig.org
+root = true
+
+[*]
+# to match prettier defaults
+indent_style = space
+indent_size = 2
+
+[{Makefile,**.mk}]
+# Use tabs for indentation (Makefiles require tabs)
+indent_style = tab
