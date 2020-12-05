@@ -1,0 +1,22 @@
+{
+  "name": "webassembly-wasi-experiments",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Discover WebAssembly System Interface (WASI) with C/Rust use cases",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "staticFiles": {
+    "staticPath": [
+      "browser"
+    ],
+    "watcherGlob": "*.wasm"
+  },
+  "keywords": ["WebAssembly", "WASI", "wasm", "C", "Rust", "Wasmtime", "Wasmer"],
+  "author": "Christophe Rosset <tophe@topheman.com> (http://labs.topheman.com/)",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "2.2.1"
+  }
+}
