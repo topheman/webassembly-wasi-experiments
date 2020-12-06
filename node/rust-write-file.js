@@ -14,7 +14,7 @@ const importObject = { wasi_snapshot_preview1: wasi.wasiImport };
 
 (async () => {
   const wasm = await WebAssembly.compile(
-    fs.readFileSync(path.resolve(__dirname, './wasm/rust-write-file.wasm')),
+    fs.readFileSync(path.resolve(__dirname, './rust-write-file.wasm')),
   );
   const instance = await WebAssembly.instantiate(wasm, importObject);
 
