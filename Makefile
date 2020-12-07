@@ -15,36 +15,36 @@ docker_run_toolchain_no_volumes = \
 
 default: help
 
-.PHONY: cleanup create-rust-write-file build-rust-write-file cpwasm-rust-write-file run-wasmtime-rust-write-file run-node-rust-write-file
+.PHONY: cleanup create-rust-app build-rust-app cpwasm-rust-app run-wasmtime-rust-app run-node-rust-app
 
 init-docker: ## 🛠  Build docker images 🐳
 	docker build - < toolchain.Dockerfile -t $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION)
 
-build-rust-write-file:
-	cd rust-write-file && $(CARGO_BUILD_WASI)
+build-rust-app:
+	cd rust-app && $(CARGO_BUILD_WASI)
 
-docker-build-rust-write-file:
-	$(call docker_run_toolchain,/rust-write-file:/code,$(CARGO_BUILD_WASI))
+docker-build-rust-app:
+	$(call docker_run_toolchain,/rust-app:/code,$(CARGO_BUILD_WASI))
 
-cpwasm-rust-write-file:
-	cp rust-write-file/target/wasm32-wasi/release/rust-write-file.wasm node/
+cpwasm-rust-app:
+	cp rust-app/target/wasm32-wasi/release/rust-app.wasm node/
 
-create-rust-write-file: ## 🦀⚙️  [rust-write-file] Build wasm file + copy to node/wasm (on host) 💻
-	$(MAKE) build-rust-write-file
-	$(MAKE) cpwasm-rust-write-file
+create-rust-app: ## 🦀⚙️  [rust-app] Build wasm file + copy to node/wasm (on host) 💻
+	$(MAKE) build-rust-app
+	$(MAKE) cpwasm-rust-app
 
-docker-create-rust-write-file: ## 🦀⚙️  [rust-write-file] Build wasm file + copy to node/wasm (via docker) 🐳
-	$(MAKE) docker-build-rust-write-file
-	$(MAKE) cpwasm-rust-write-file
+docker-create-rust-app: ## 🦀⚙️  [rust-app] Build wasm file + copy to node/wasm (via docker) 🐳
+	$(MAKE) docker-build-rust-app
+	$(MAKE) cpwasm-rust-app
 
-run-wasmtime-rust-write-file: ## 🟦▶️  [rust-write-file] Run through wasmtime (on host) 💻
-	wasmtime ./rust-write-file/target/wasm32-wasi/release/rust-write-file.wasm --dir=./
+run-wasmtime-rust-app: ## 🟦▶️  [rust-app] Run through wasmtime (on host) 💻
+	wasmtime ./rust-app/target/wasm32-wasi/release/rust-app.wasm --dir=./
 
-docker-run-wasmtime-rust-write-file: ## 🟦▶️  [rust-write-file] Run through wasmtime (via docker) 🐳
-	$(call docker_run_toolchain,/rust-write-file:/code,wasmtime ./target/wasm32-wasi/release/rust-write-file.wasm --dir=./)
+docker-run-wasmtime-rust-app: ## 🟦▶️  [rust-app] Run through wasmtime (via docker) 🐳
+	$(call docker_run_toolchain,/rust-app:/code,wasmtime ./target/wasm32-wasi/release/rust-app.wasm --dir=./)
 
-run-node-rust-write-file: ## 🟨▶️  [rust-write-file] Run through WASI in nodeJS (on host) 💻
-	$(NODE_RUN_WASI) ./node/rust-write-file.js
+run-node-rust-app: ## 🟨▶️  [rust-app] Run through WASI in nodeJS (on host) 💻
+	$(NODE_RUN_WASI) ./node/rust-app.js
 
 docker-run-toolchain-bash:
 	docker run -it --rm $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION) bash

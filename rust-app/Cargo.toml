@@ -1,5 +1,5 @@
 [package]
-name = "rust-write-file"
+name = "rust-app"
 version = "0.1.0"
 authors = ["Christophe Rosset <tophe@topheman.com>"]
 edition = "2018"
