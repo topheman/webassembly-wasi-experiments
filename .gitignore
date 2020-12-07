@@ -34,3 +34,6 @@ rust-*/target/
 
 # tmp
 tmp.txt
+
+# ignore wasm files
+*.wasm
