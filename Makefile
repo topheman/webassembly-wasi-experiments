@@ -48,10 +48,10 @@ docker-create-rust-app: ## 🦀⚙️  [rust-app] Build wasm file + copy to node
 	$(MAKE) cpwasm-rust-app
 
 run-wasmtime-rust-app: ## 🟦▶️  [rust-app] Run through wasmtime (on host) 💻
-	wasmtime ./rust-app/target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::$(shell pwd)/rust-app
+	wasmtime ./rust-app/target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::$(shell pwd)/rust-app "$(shell date)" "Running from wasmtime on Host" && $(call output_tmp_txt,./rust-app)
 
 docker-run-wasmtime-rust-app: ## 🟦▶️  [rust-app] Run through wasmtime (via docker) 🐳
-	$(call docker_run_toolchain,/rust-app:/code,wasmtime ./target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::/code)
+	$(call docker_run_toolchain,/rust-app:/code,wasmtime ./target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::/code) "$(shell date)" "Running from wasmtime on Docker" && $(call output_tmp_txt,./rust-app)
 
 run-node-rust-app: ## 🟨▶️  [rust-app] Run through WASI in nodeJS (on host) 💻
 	$(NODE_RUN_WASI) ./node/rust-app.js
