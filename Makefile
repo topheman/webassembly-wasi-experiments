@@ -13,12 +13,22 @@ docker_run_toolchain = \
 docker_run_toolchain_no_volumes = \
  docker run --rm $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION) $1
 
+# Checking for cat if not present to avoid failing the whole command
+output_tmp_txt = \
+	command -v cat > /dev/null && echo "Generated tmp.txt 👇" && cat $1/tmp.txt
+
 default: help
 
 .PHONY: cleanup create-rust-app build-rust-app cpwasm-rust-app run-wasmtime-rust-app run-node-rust-app
 
 init-docker: ## 🛠  Build docker images 🐳
 	docker build - < toolchain.Dockerfile -t $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION)
+
+run-rust-app: ## 🦀▶️  [rust-app] Run rust-app (on host) 💻
+	cd rust-app && cargo run "$(shell date)" "Running from cargo on Host" && $(call output_tmp_txt,.)
+
+docker-run-rust-app: ## 🦀▶️  [rust-app] Run rust-app (on host) 🐳
+	$(call docker_run_toolchain,/rust-app:/code,cargo run "$(shell date)" "Running from cargo on Docker") && $(call output_tmp_txt,./rust-app)
 
 build-rust-app:
 	cd rust-app && $(CARGO_BUILD_WASI)
