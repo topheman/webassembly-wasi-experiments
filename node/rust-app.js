@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const { WASI } = require('wasi');
 const wasi = new WASI({
-  args: process.argv,
+  args: process.argv.slice(1), // skip the first arg (the name of the javascript file)
   env: process.env,
   preopens: {
     // key = folders internal to the sandbox / value = real path on host machine

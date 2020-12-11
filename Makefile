@@ -54,7 +54,7 @@ docker-run-wasmtime-rust-app: ## 🟦▶️  [rust-app] Run through wasmtime (vi
 	$(call docker_run_toolchain,/rust-app:/code,wasmtime ./target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::/code) "$(shell date)" "Running from wasmtime on Docker" && $(call output_tmp_txt,./rust-app)
 
 run-node-rust-app: ## 🟨▶️  [rust-app] Run through WASI in nodeJS (on host) 💻
-	$(NODE_RUN_WASI) ./node/rust-app.js
+	$(NODE_RUN_WASI) ./node/rust-app.js "$(shell date)" "Running from node on Host" && $(call output_tmp_txt,./node)
 
 docker-run-toolchain-bash:
 	docker run -it --rm $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION) bash
