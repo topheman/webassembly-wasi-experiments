@@ -10,3 +10,4 @@ package.json
 *.fixtures.json
 react-modules/*
 bin/yarn*
+*.py

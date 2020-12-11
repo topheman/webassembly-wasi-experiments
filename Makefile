@@ -6,12 +6,14 @@ NODE_RUN_WASI = node --experimental-wasi-unstable-preview1 --experimental-wasm-b
 
 DOCKER_TOOLCHAIN_IMAGE_NAME = topheman/webassembly-wasi-experiments-toolchain
 DOCKER_TOOLCHAIN_IMAGE_VERSION = 0.0.1
+DOCKER_PYTHON_IMAGE_NAME = topheman/webassembly-wasi-experiments-python
+DOCKER_PYTHON_IMAGE_VERSION = 0.0.1
 
 docker_run_toolchain = \
 	docker run --rm -v $(shell pwd)$1 $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION) $2
 
-docker_run_toolchain_no_volumes = \
- docker run --rm $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION) $1
+docker_run_python = \
+	docker run --rm -v $(shell pwd)$1 $(DOCKER_PYTHON_IMAGE_NAME):$(DOCKER_PYTHON_IMAGE_VERSION) $2
 
 # Checking for cat if not present to avoid failing the whole command
 output_tmp_txt = \
@@ -22,7 +24,14 @@ default: help
 .PHONY: cleanup create-rust-app build-rust-app cpwasm-rust-app run-wasmtime-rust-app run-node-rust-app
 
 init-docker: ## 🛠  Build docker images 🐳
+	$(MAKE) init-docker-toolchain
+	$(MAKE) init-docker-python
+
+init-docker-toolchain:
 	docker build - < toolchain.Dockerfile -t $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION)
+
+init-docker-python:
+	docker build - < python.Dockerfile -t $(DOCKER_PYTHON_IMAGE_NAME):$(DOCKER_PYTHON_IMAGE_VERSION)
 
 run-rust-app: ## 🦀▶️  [rust-app] Run rust-app (on host) 💻
 	cd rust-app && cargo run "$(shell date)" "Running from cargo on Host" && $(call output_tmp_txt,.)
@@ -38,6 +47,7 @@ docker-build-rust-app:
 
 cpwasm-rust-app:
 	cp rust-app/target/wasm32-wasi/release/rust-app.wasm node/
+	cp rust-app/target/wasm32-wasi/release/rust-app.wasm python/
 
 create-rust-app: ## 🦀⚙️  [rust-app] Build wasm file + copy to node/wasm (on host) 💻
 	$(MAKE) build-rust-app
@@ -55,6 +65,9 @@ docker-run-wasmtime-rust-app: ## 🟦▶️  [rust-app] Run through wasmtime (vi
 
 run-node-rust-app: ## 🟨▶️  [rust-app] Run through WASI in nodeJS (on host) 💻
 	$(NODE_RUN_WASI) ./node/rust-app.js "$(shell date)" "Running from node on Host" && $(call output_tmp_txt,./node)
+
+docker-run-python-rust-app: ## 🐍▶️  [rust-app] Run through WASI in python - using wasmer runtime (on docker) 🐳
+	$(call docker_run_python,/python:/code,python3 rust-app.py "$(shell date)" "Running from python (wasmer) on Docker") && $(call output_tmp_txt,./python)
 
 docker-run-toolchain-bash:
 	docker run -it --rm $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION) bash
