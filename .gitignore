@@ -6,6 +6,10 @@
  web_modules
  node_modules
 
+# parcel
+.cache
+dist
+
 # dependencies
 /node_modules
 /.pnp

@@ -48,6 +48,7 @@ docker-build-rust-app:
 cpwasm-rust-app:
 	cp rust-app/target/wasm32-wasi/release/rust-app.wasm node/
 	cp rust-app/target/wasm32-wasi/release/rust-app.wasm python/
+	cp rust-app/target/wasm32-wasi/release/rust-app.wasm browser/
 
 create-rust-app: ## 🦀⚙️  [rust-app] Build wasm file + copy to node/wasm (on host) 💻
 	$(MAKE) build-rust-app

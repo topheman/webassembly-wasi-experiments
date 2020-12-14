@@ -5,6 +5,9 @@
   "description": "Discover WebAssembly System Interface (WASI) with C/Rust use cases",
   "main": "index.js",
   "scripts": {
+    "browser:dev": "parcel --port=5000 ./browser/rust-app.html",
+    "browser:build": "npx rimraf ./dist && parcel build --no-minify ./browser/rust-app.html",
+    "browser:serve": "live-server ./dist --port=5000 --watch=. --ignore=node_modules --no-browser",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "staticFiles": {
@@ -17,6 +20,15 @@
   "author": "Christophe Rosset <tophe@topheman.com> (http://labs.topheman.com/)",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "2.2.1"
+    "live-server": "^1.2.1",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.5.0",
+    "prettier": "2.2.1",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "@wasmer/wasi": "^0.12.0",
+    "@wasmer/wasm-transformer": "^0.12.0",
+    "@wasmer/wasmfs": "^0.12.0"
   }
 }
