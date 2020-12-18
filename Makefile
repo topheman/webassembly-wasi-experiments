@@ -21,7 +21,7 @@ output_tmp_txt = \
 
 default: help
 
-.PHONY: cleanup create-rust-app build-rust-app cpwasm-rust-app run-wasmtime-rust-app run-node-rust-app
+.PHONY: cleanup docker-run-python-rust-app docker-run-rust-app docker-run-wasmtime-rust-app docker-wasm-create-rust-app init-docker run-c-app run-node-rust-app run-rust-app run-wasmtime-rust-app wasm-create-rust-appcleanup docker-run-python-rust-app docker-run-rust-app docker-run-wasmtime-rust-app docker-wasm-create-rust-app init-docker run-c-app run-node-rust-app run-rust-app run-wasmtime-rust-app wasm-create-rust-app
 
 init-docker: ## 🛠  Build docker images 🐳
 	$(MAKE) init-docker-toolchain
@@ -33,22 +33,22 @@ init-docker-toolchain:
 init-docker-python:
 	docker build - < python.Dockerfile -t $(DOCKER_PYTHON_IMAGE_NAME):$(DOCKER_PYTHON_IMAGE_VERSION)
 
-run-rust-app: ## 🦀▶️  [rust-app] Run rust-app (on host) 💻
+run-rust-app: ## 🦀▶️  [rust-app][rust ] Run rust-app (on host) 💻
 	cd rust-app && cargo run "$(shell date)" "Running from cargo on Host" && $(call output_tmp_txt,.)
 
-run-c-app: ## 🅲▶️  [c-app] Run c-app (on host) 💻
+run-c-app: ## 🅲▶️   [c-app   ][c    ] Run c-app (on host) 💻
 	$(MAKE) build-c-app && cd c && ./c-app "$(shell date)" "Running from c-app (on host) compiled with gcc (on host)"
 
-docker-run-rust-app: ## 🦀▶️  [rust-app] Run rust-app (on host) 🐳
+docker-run-rust-app: ## 🦀▶️  [rust-app][rust ] Run rust-app (via docker) 🐳
 	$(call docker_run_toolchain,/rust-app:/code,cargo run "$(shell date)" "Running from cargo on Docker") && $(call output_tmp_txt,./rust-app)
 
-build-rust-app:
+wasm-build-rust-app:
 	cd rust-app && $(CARGO_BUILD_WASI)
 
 build-c-app:
 	gcc ./c/c-app.c -o ./c/c-app
 
-docker-build-rust-app:
+docker-wasm-build-rust-app:
 	$(call docker_run_toolchain,/rust-app:/code,$(CARGO_BUILD_WASI))
 
 cpwasm-rust-app:
@@ -56,24 +56,24 @@ cpwasm-rust-app:
 	cp rust-app/target/wasm32-wasi/release/rust-app.wasm python/
 	cp rust-app/target/wasm32-wasi/release/rust-app.wasm browser/
 
-create-rust-app: ## 🦀⚙️  [rust-app] Build wasm file + copy to node/wasm (on host) 💻
-	$(MAKE) build-rust-app
+wasm-create-rust-app: ## 🦀⚙️  [rust-app][build] Build wasm file + copy to node/wasm (on host) 💻
+	$(MAKE) wasm-build-rust-app
 	$(MAKE) cpwasm-rust-app
 
-docker-create-rust-app: ## 🦀⚙️  [rust-app] Build wasm file + copy to node/wasm (via docker) 🐳
-	$(MAKE) docker-build-rust-app
+docker-wasm-create-rust-app: ## 🦀⚙️  [rust-app][build] Build wasm file + copy to node/wasm (via docker) 🐳
+	$(MAKE) docker-wasm-build-rust-app
 	$(MAKE) cpwasm-rust-app
 
-run-wasmtime-rust-app: ## 🟦▶️  [rust-app] Run through wasmtime (on host) 💻
+run-wasmtime-rust-app: ## 🟦▶️  [rust-app][wasm ] Run through wasmtime (on host) 💻
 	wasmtime ./rust-app/target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::$(shell pwd)/rust-app "$(shell date)" "Running from wasmtime on Host" && $(call output_tmp_txt,./rust-app)
 
-docker-run-wasmtime-rust-app: ## 🟦▶️  [rust-app] Run through wasmtime (via docker) 🐳
+docker-run-wasmtime-rust-app: ## 🟦▶️  [rust-app][wasm ] Run through wasmtime (via docker) 🐳
 	$(call docker_run_toolchain,/rust-app:/code,wasmtime ./target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::/code) "$(shell date)" "Running from wasmtime on Docker" && $(call output_tmp_txt,./rust-app)
 
-run-node-rust-app: ## 🟨▶️  [rust-app] Run through WASI in nodeJS (on host) 💻
+run-node-rust-app: ## 🟨▶️  [rust-app][wasm ] Run through WASI in nodeJS (on host) 💻
 	$(NODE_RUN_WASI) ./node/rust-app.js "$(shell date)" "Running from node on Host" && $(call output_tmp_txt,./node)
 
-docker-run-python-rust-app: ## 🐍▶️  [rust-app] Run through WASI in python - using wasmer runtime (on docker) 🐳
+docker-run-python-rust-app: ## 🐍▶️  [rust-app][wasm ] Run through WASI in python - using wasmer runtime (on docker) 🐳
 	$(call docker_run_python,/python:/code,python3 rust-app.py "$(shell date)" "Running from python (wasmer) on Docker") && $(call output_tmp_txt,./python)
 
 docker-run-toolchain-bash:
