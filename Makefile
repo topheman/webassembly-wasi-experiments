@@ -27,7 +27,7 @@ output_tmp_txt = \
 
 default: help
 
-.PHONY: cleanup docker-run-python-rust-app docker-run-rust-app docker-run-wasmtime-rust-app docker-wasm-create-rust-app init-docker run-c-app run-node-rust-app run-rust-app run-wasmtime-rust-app wasm-create-rust-appcleanup docker-run-python-rust-app docker-run-rust-app docker-run-wasmtime-rust-app docker-wasm-create-rust-app init-docker run-c-app run-node-rust-app run-rust-app run-wasmtime-rust-app wasm-create-rust-app
+.PHONY: cleanup docker-run-python-c-app docker-run-python-rust-app docker-run-rust-app docker-run-wasmtime-rust-app docker-wasm-create-c-app docker-wasm-create-rust-app init-docker run-c-app run-node-c-app run-node-rust-app run-rust-app run-wasmtime-rust-app wasm-create-rust-app
 
 init-docker: ## 🛠  Build docker images 🐳
 	$(MAKE) init-docker-toolchain
@@ -86,16 +86,16 @@ docker-wasm-create-rust-app: ## 🦀⚙️  [rust-app][build] Build wasm file + 
 	$(MAKE) cpwasm-rust-app
 
 run-wasmtime-rust-app: ## 🟦▶️  [rust-app][wasm ] Run through wasmtime (on host) 💻
-	wasmtime ./rust-app/target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::$(shell pwd)/rust-app "$(shell date)" "Running from wasmtime on Host" && $(call output_tmp_txt,./rust-app)
+	wasmtime ./rust-app/target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::$(shell pwd)/rust-app "$(shell date)" "Running from wasmtime on Host" "Original program: Rust compiled with cargo to WASM" "Accessing File System from within WebAssembly thx to WASI" && $(call output_tmp_txt,./rust-app)
 
 docker-run-wasmtime-rust-app: ## 🟦▶️  [rust-app][wasm ] Run through wasmtime (via docker) 🐳
-	$(call docker_run_toolchain,/rust-app:/code,wasmtime ./target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::/code) "$(shell date)" "Running from wasmtime on Docker" && $(call output_tmp_txt,./rust-app)
+	$(call docker_run_toolchain,/rust-app:/code,wasmtime ./target/wasm32-wasi/release/rust-app.wasm --dir=. --mapdir=.::/code) "$(shell date)" "Running from wasmtime on Docker" "Original program: Rust compiled with cargo to WASM" "Accessing File System from within WebAssembly thx to WASI" && $(call output_tmp_txt,./rust-app)
 
 run-node-c-app: ## 🟨▶️  [c-app   ][wasm ] Run through WASI in nodeJS (on host) 💻
-	$(NODE_RUN_WASI) ./node/c-app.js "$(shell date)" "Running from node on Host, a C program compiled with clang to WASM, accessing File System from within WebAssembly thx to WASI" && $(call output_tmp_txt,./node)
+	$(NODE_RUN_WASI) ./node/c-app.js "$(shell date)" "Running from node on Host" "Original program: C compiled with clang to WASM" "Accessing File System from within WebAssembly thx to WASI" && $(call output_tmp_txt,./node)
 
 run-node-rust-app: ## 🟨▶️  [rust-app][wasm ] Run through WASI in nodeJS (on host) 💻
-	$(NODE_RUN_WASI) ./node/rust-app.js "$(shell date)" "Running from node on Host, a Rust program compiled with cargo to WASM, accessing File System from within WebAssembly thx to WASI" && $(call output_tmp_txt,./node)
+	$(NODE_RUN_WASI) ./node/rust-app.js "$(shell date)" "Running from node on Host" "Original program: Rust compiled with cargo to WASM" "Accessing File System from within WebAssembly thx to WASI" && $(call output_tmp_txt,./node)
 
 docker-run-python-c-app: ## 🐍▶️  [c-app   ][wasm ] Run through WASI in python - using wasmer runtime (on docker) 🐳
 	$(call docker_run_python,/python:/code,python3 c-app.py "$(shell date)" "Running from python (wasmer) on Docker" "Original program: C compiled with clang to WASM" "Accessing File System from within WebAssembly thx to WASI") && $(call output_tmp_txt,./python)
