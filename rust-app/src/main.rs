@@ -6,6 +6,7 @@ fn main() -> std::io::Result<()> {
     let args: Vec<String> = env::args().collect();
     let mut content = String::new();
     content.push_str("Hello, world!\n");
+    content.push_str("Originally coded in rust-app/src/main.rs\n");
     for (i, arg) in args.iter().enumerate() {
         if i > 0 {
             content.push_str(arg);

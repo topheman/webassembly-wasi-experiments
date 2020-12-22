@@ -12,7 +12,8 @@ int main(int argc, char *argv[])
   }
 
   char content[256];
-  strcpy(content, "Hello World\n");
+  strcpy(content, "Hello World!\n");
+  strcat(content, "Originally coded in c/c-app.c\n");
   int counter;
   if (argc >= 2)
   {
