@@ -66,6 +66,7 @@ docker-wasm-build-rust-app:
 
 cpwasm-c-app:
 	cp c/c-app-generated.wasm node/
+	cp c/c-app-generated.wasm python/
 
 cpwasm-rust-app:
 	cp rust-app/target/wasm32-wasi/release/rust-app.wasm node/
@@ -96,8 +97,11 @@ run-node-c-app: ## 🟨▶️  [c-app   ][wasm ] Run through WASI in nodeJS (on 
 run-node-rust-app: ## 🟨▶️  [rust-app][wasm ] Run through WASI in nodeJS (on host) 💻
 	$(NODE_RUN_WASI) ./node/rust-app.js "$(shell date)" "Running from node on Host, a Rust program compiled with cargo to WASM, accessing File System from within WebAssembly thx to WASI" && $(call output_tmp_txt,./node)
 
+docker-run-python-c-app: ## 🐍▶️  [c-app   ][wasm ] Run through WASI in python - using wasmer runtime (on docker) 🐳
+	$(call docker_run_python,/python:/code,python3 c-app.py "$(shell date)" "Running from python (wasmer) on Docker" "Original program: C compiled with clang to WASM" "Accessing File System from within WebAssembly thx to WASI") && $(call output_tmp_txt,./python)
+
 docker-run-python-rust-app: ## 🐍▶️  [rust-app][wasm ] Run through WASI in python - using wasmer runtime (on docker) 🐳
-	$(call docker_run_python,/python:/code,python3 rust-app.py "$(shell date)" "Running from python (wasmer) on Docker") && $(call output_tmp_txt,./python)
+	$(call docker_run_python,/python:/code,python3 rust-app.py "$(shell date)" "Running from python (wasmer) on Docker" "Original program: Rust compiled with cargo to WASM" "Accessing File System from within WebAssembly thx to WASI") && $(call output_tmp_txt,./python)
 
 docker-run-toolchain-bash:
 	docker run -it --rm $(DOCKER_TOOLCHAIN_IMAGE_NAME):$(DOCKER_TOOLCHAIN_IMAGE_VERSION) bash
