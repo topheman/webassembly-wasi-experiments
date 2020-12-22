@@ -67,6 +67,7 @@ docker-wasm-build-rust-app:
 cpwasm-c-app:
 	cp c/c-app-generated.wasm node/
 	cp c/c-app-generated.wasm python/
+	cp c/c-app-generated.wasm browser/
 
 cpwasm-rust-app:
 	cp rust-app/target/wasm32-wasi/release/rust-app.wasm node/

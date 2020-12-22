@@ -5,8 +5,8 @@
   "description": "Discover WebAssembly System Interface (WASI) with C/Rust use cases",
   "main": "index.js",
   "scripts": {
-    "browser:dev": "parcel --port=5000 ./browser/rust-app.html",
-    "browser:build": "npx rimraf ./dist && parcel build --no-minify ./browser/rust-app.html",
+    "browser:dev": "parcel --port=5000 ./browser/*.html",
+    "browser:build": "npx rimraf ./dist && parcel build --no-minify ./browser/*.html",
     "browser:serve": "live-server ./dist --port=5000 --watch=. --ignore=node_modules --no-browser",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
