@@ -54,8 +54,10 @@ const startWasiTask = async () => {
 };
 startWasiTask()
   .then((...rest) => {
+    const output = convertUint8ArrayToString(wasmFs.fs.readFileSync('tmp.txt'));
+    document.querySelector('.output').textContent = output;
     console.log('Generated tmp.txt file on the location ./ 👇');
-    console.log(convertUint8ArrayToString(wasmFs.fs.readFileSync('tmp.txt')));
+    console.log(output);
   })
   .catch((e) => {
     console.error('failure', e);
