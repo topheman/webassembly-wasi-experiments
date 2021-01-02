@@ -24,6 +24,14 @@ h1 a {
   text-decoration: none;
 }
 
+.logo-wrapper {
+  text-align: center;
+}
+
+.logo-wrapper img {
+  max-width: 100%;
+}
+
 .list {
   display: flex;
   justify-content: center;
