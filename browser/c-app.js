@@ -61,4 +61,17 @@ startWasiTask()
   })
   .catch((e) => {
     console.error('failure', e);
+    const error = `
+OOPS, there was an error, your device might not support WebAssembly
+or something went wrong in the execution of the wasm file.
+
+This demo works well on Chrome and Firefox, it does not work yet on Safari.
+
+---
+
+${e.message}
+
+${e.stack}
+    `;
+    document.querySelector('.output').textContent = error;
   });
