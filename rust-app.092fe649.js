@@ -15759,4 +15759,4 @@ startWasiTask().then(function () {
   document.querySelector('.output').textContent = error;
 });
 },{"regenerator-runtime/runtime":"QVnC","@wasmer/wasi":"Klds","@wasmer/wasi/lib/bindings/browser":"yTJC","@wasmer/wasm-transformer":"Y7ZV","@wasmer/wasmfs":"gRtQ"}]},{},["laUS"], null)
-//# sourceMappingURL=/rust-app.092fe649.js.map
+//# sourceMappingURL=rust-app.092fe649.js.map

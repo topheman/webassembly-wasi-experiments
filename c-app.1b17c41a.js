@@ -15759,4 +15759,4 @@ startWasiTask().then(function () {
   document.querySelector('.output').textContent = error;
 });
 },{"regenerator-runtime/runtime":"QVnC","@wasmer/wasi":"Klds","@wasmer/wasi/lib/bindings/browser":"yTJC","@wasmer/wasm-transformer":"Y7ZV","@wasmer/wasmfs":"gRtQ"}]},{},["kn2F"], null)
-//# sourceMappingURL=/c-app.1b17c41a.js.map
+//# sourceMappingURL=c-app.1b17c41a.js.map
