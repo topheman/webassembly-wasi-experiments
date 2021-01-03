@@ -1,0 +1,66 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+code,
+pre {
+  font-size: 1.2rem;
+}
+
+a,
+h1,
+strong {
+  color: #900000;
+}
+
+h1 {
+  text-align: center;
+}
+
+h1 a {
+  text-decoration: none;
+}
+
+.logo-wrapper {
+  text-align: center;
+}
+
+.logo-wrapper img {
+  max-width: 100%;
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.list a {
+  padding: 5px;
+}
+
+.list.navigation {
+  font-size: 1.5rem;
+}
+
+.list.navigation a {
+  font-size: 1.5rem;
+}
+
+.list.navigation a.active {
+  text-decoration: none;
+}
+
+footer {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.output {
+  overflow-x: auto;
+}

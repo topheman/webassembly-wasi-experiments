@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webassembly-wasi-experiments - c-app</title>
+    <link href="/style.8bfa4714.css" rel="stylesheet">
+    <script src="/c-app.1b17c41a.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="/index.html" title="Back home page">webassembly-wasi-experiments</a>
+      </h1>
+      <nav>
+        <ul class="list navigation">
+          <li>
+            <a href="/c-app.html" title="Test wasm version of the C program" class="active">c-app</a>
+          </li>
+          <li>
+            <a href="/rust-app.html" title="Test wasm version of the Rust program">rust-app</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <p>What happens here ?</p>
+      <ol>
+        <li>
+          <a href="https://github.com/topheman/webassembly-wasi-experiments/blob/master/c/c-app.c">c/c-app.c</a>
+          was compiled to <code>.wasm</code> (you can see it in the network
+          inspector)
+        </li>
+        <li>
+          The
+          <a href="https://github.com/topheman/webassembly-wasi-experiments/blob/master/browser/c-app.js">c-app.js</a>
+          script which is running inside the browser compiles and executes that
+          wasm file
+        </li>
+        <li>
+          This runs inside the wasmer runtime which emulates file system
+          bindings (our original program thinks it is interacting with a real
+          file system)
+        </li>
+      </ol>
+      <p>
+        Bellow is the content of the <code>./tmp.txt</code> file "written" on
+        the emulated file system:
+      </p>
+      <pre class="output"></pre>
+    </main>
+    <footer>
+      <p class="copyright">
+        ©2020-2021 -
+        <a href="http://labs.topheman.com/">labs.topheman.com</a> - Christophe
+        Rosset
+      </p>
+    </footer>
+  </body>
+</html>
